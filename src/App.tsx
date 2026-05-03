@@ -25,7 +25,7 @@ class App extends Component {
       <div>
         App
         <Header />
-        <Main />
+        <Main pokemons={this.state.pokemons} />
       </div>
     );
   }

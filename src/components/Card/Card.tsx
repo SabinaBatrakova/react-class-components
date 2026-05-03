@@ -1,8 +1,14 @@
-import { Component } from "react";
+import { Component } from 'react';
+import type { CardProps } from '../../types';
 
-class Card extends Component {
+class Card extends Component<CardProps> {
   render() {
-    return <div>Card</div>
+    const { pokemon } = this.props;
+    return (
+      <div>
+        {pokemon.name},{pokemon.url.split('/').at(-2)}
+      </div>
+    );
   }
 }
 export default Card;
