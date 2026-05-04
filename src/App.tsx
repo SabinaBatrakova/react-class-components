@@ -13,15 +13,41 @@ class App extends Component {
   componentDidMount(): void {
     this.setState({ isLoading: true });
 
-    fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ pokemons: data.results, isLoading: false });
-      });
+    const savedSearch = localStorage.getItem('searchValue');
+
+    if (savedSearch) {
+      this.handleSearch(savedSearch);
+    } else {
+      fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({ pokemons: data.results, isLoading: false });
+        });
+    }
   }
 
   handleSearch = (value: string): void => {
-    console.log(value);
+    localStorage.setItem('searchValue', value);
+    if (!value) {
+      fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({ pokemons: data.results });
+        });
+    } else {
+      fetch(`https://pokeapi.co/api/v2/pokemon/${value}`)
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({
+            pokemons: [
+              {
+                name: data.name,
+                url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`,
+              },
+            ],
+          });
+        });
+    }
   };
 
   render() {

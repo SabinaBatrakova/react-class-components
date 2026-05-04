@@ -3,7 +3,7 @@ import type { SearchProps, SearchState } from '../../types';
 
 class Search extends Component<SearchProps, SearchState> {
   state: SearchState = {
-    searchValue: '',
+    searchValue: this.props.initValue,
   };
 
   handleClick = (): void => {

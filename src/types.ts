@@ -30,6 +30,7 @@ export interface CardProps {
 
 export interface SearchProps {
   onSearch: (value: string) => void;
+  initValue: string;
 }
 
 export interface SearchState {
