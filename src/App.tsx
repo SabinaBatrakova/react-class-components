@@ -27,12 +27,13 @@ class App extends Component {
   }
 
   handleSearch = (value: string): void => {
+    this.setState({ isLoading: true });
     localStorage.setItem('searchValue', value);
     if (!value) {
       fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
         .then((response) => response.json())
         .then((data) => {
-          this.setState({ pokemons: data.results });
+          this.setState({ pokemons: data.results, isLoading: false });
         });
     } else {
       fetch(`https://pokeapi.co/api/v2/pokemon/${value}`)
@@ -45,6 +46,7 @@ class App extends Component {
                 url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`,
               },
             ],
+            isLoading: false,
           });
         });
     }
@@ -54,7 +56,7 @@ class App extends Component {
     return (
       <div className="flex flex-col min-h-screen bg-gray-100">
         <Header onSearch={this.handleSearch} />
-        <Main pokemons={this.state.pokemons} />
+        <Main pokemons={this.state.pokemons} isLoading={this.state.isLoading} />
       </div>
     );
   }

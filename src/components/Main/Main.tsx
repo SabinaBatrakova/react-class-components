@@ -4,9 +4,16 @@ import type { MainProps } from '../../types';
 
 class Main extends Component<MainProps> {
   render() {
+    const { pokemons, isLoading } = this.props;
     return (
       <div className="flex-1 p-6">
-        <CardList pokemons={this.props.pokemons} />
+        {isLoading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : (
+          <CardList pokemons={pokemons} isLoading={isLoading} />
+        )}
       </div>
     );
   }
