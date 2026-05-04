@@ -19,6 +19,7 @@ export type AppState = {
 export interface MainProps {
   pokemons: Pokemon[];
   isLoading: boolean;
+  error: string | null;
 }
 
 export interface CardListProps {
