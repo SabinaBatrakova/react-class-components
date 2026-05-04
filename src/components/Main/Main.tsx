@@ -5,7 +5,7 @@ import type { MainProps } from '../../types';
 class Main extends Component<MainProps> {
   render() {
     return (
-      <div>
+      <div className="flex-1 p-6">
         <CardList pokemons={this.props.pokemons} />
       </div>
     );
