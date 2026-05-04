@@ -27,3 +27,15 @@ export interface CardListProps {
 export interface CardProps {
   pokemon: Pokemon;
 }
+
+export interface SearchProps {
+  onSearch: (value: string) => void;
+}
+
+export interface SearchState {
+  searchValue: string;
+}
+
+export interface HeaderProps {
+  onSearch: (term: string) => void;
+}

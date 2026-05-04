@@ -20,10 +20,14 @@ class App extends Component {
       });
   }
 
+  handleSearch = (value: string): void => {
+    console.log(value);
+  };
+
   render() {
     return (
       <div className="flex flex-col min-h-screen bg-gray-100">
-        <Header />
+        <Header onSearch={this.handleSearch} />
         <Main pokemons={this.state.pokemons} />
       </div>
     );

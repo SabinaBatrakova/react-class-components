@@ -1,11 +1,12 @@
 import { Component } from 'react';
 import Search from '../Search/Search';
+import type { HeaderProps } from '../../types';
 
-class Header extends Component {
+class Header extends Component<HeaderProps> {
   render() {
     return (
       <div className="bg-gray-800 text-white p-4 w-full">
-        <Search />
+        <Search onSearch={this.props.onSearch} />
       </div>
     );
   }
