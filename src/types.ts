@@ -14,6 +14,7 @@ export type AppState = {
   pokemons: Pokemon[];
   isLoading: boolean;
   error: string | null;
+  throwError: boolean;
 };
 
 export interface MainProps {
@@ -42,4 +43,12 @@ export interface SearchState {
 
 export interface HeaderProps {
   onSearch: (term: string) => void;
+}
+
+export interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+export interface ErrorBoundaryProps {
+  children: React.ReactNode;
 }

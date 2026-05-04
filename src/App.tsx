@@ -8,6 +8,7 @@ class App extends Component {
     pokemons: [],
     isLoading: false,
     error: null,
+    throwError: false,
   };
 
   componentDidMount(): void {
@@ -64,6 +65,9 @@ class App extends Component {
   };
 
   render() {
+    if (this.state.throwError) {
+      throw new Error('Test error');
+    }
     return (
       <div className="flex flex-col min-h-screen bg-gray-100">
         <Header onSearch={this.handleSearch} />
@@ -72,6 +76,12 @@ class App extends Component {
           isLoading={this.state.isLoading}
           error={this.state.error}
         />
+        <button
+          className="fixed bottom-4 right-4 px-4 py-2 bg-amber-600 text-white rounded-3xl cursor-pointer hover:bg-amber-700"
+          onClick={() => this.setState({ throwError: true })}
+        >
+          Test Error
+        </button>
       </div>
     );
   }
