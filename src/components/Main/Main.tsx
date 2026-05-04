@@ -6,7 +6,7 @@ class Main extends Component<MainProps> {
   render() {
     return (
       <div>
-        <CardList pokemons={ this.props.pokemons } />
+        <CardList pokemons={this.props.pokemons} />
       </div>
     );
   }

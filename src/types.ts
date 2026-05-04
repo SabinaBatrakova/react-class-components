@@ -11,10 +11,10 @@ export type ApiAnswer = {
 };
 
 export type AppState = {
-  pokemons: Pokemon[],
-  isLoading: boolean,
-  error: string | null
-}
+  pokemons: Pokemon[];
+  isLoading: boolean;
+  error: string | null;
+};
 
 export interface MainProps {
   pokemons: Pokemon[];
@@ -25,5 +25,5 @@ export interface CardListProps {
 }
 
 export interface CardProps {
- pokemon: Pokemon;
+  pokemon: Pokemon;
 }
