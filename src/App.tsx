@@ -4,6 +4,7 @@ import Main from './components/Main/Main';
 import type { AppState } from './types';
 
 class App extends Component {
+  prevSearch: string = '';
   state: AppState = {
     pokemons: [],
     isLoading: false,
@@ -28,19 +29,32 @@ class App extends Component {
   }
 
   handleSearch = (value: string): void => {
+    const trimmedValue = value.trim();
+    if (this.prevSearch === trimmedValue) {
+      return;
+    } else {
+      this.prevSearch = trimmedValue;
+      localStorage.setItem('searchValue', trimmedValue);
+    }
+
     this.setState({ isLoading: true, error: null });
-    localStorage.setItem('searchValue', value);
-    if (!value) {
+
+    if (!trimmedValue) {
       fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+          }
+          return response.json();
+        })
         .then((data) => {
           this.setState({ pokemons: data.results, isLoading: false });
         })
         .catch((error) => {
-          console.log(error);
+          this.setState({ error: error.message, isLoading: false });
         });
     } else {
-      fetch(`https://pokeapi.co/api/v2/pokemon/${value}`)
+      fetch(`https://pokeapi.co/api/v2/pokemon/${trimmedValue}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
