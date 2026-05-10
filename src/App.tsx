@@ -21,9 +21,17 @@ class App extends Component {
       this.handleSearch(savedSearch);
     } else {
       fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+          }
+          return response.json();
+        })
         .then((data) => {
           this.setState({ pokemons: data.results, isLoading: false });
+        })
+        .catch((error) => {
+          this.setState({ error: error.message, isLoading: false });
         });
     }
   }

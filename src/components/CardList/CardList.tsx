@@ -7,7 +7,7 @@ class CardList extends Component<CardListProps> {
     const { pokemons } = this.props;
     return (
       <div>
-        {pokemons.map((pokemon) => (
+        {(pokemons ?? []).map((pokemon) => (
           <Card key={pokemon.name} pokemon={pokemon} />
         ))}
       </div>
