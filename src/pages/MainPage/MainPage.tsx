@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import type { Pokemon } from '../../types';
 import Header from '../../components/Header/Header';
 import Main from '../../components/Main/Main';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 function MainPage() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -9,6 +10,8 @@ function MainPage() {
   const [error, setError] = useState(null);
   const [throwError, setThrowError] = useState(false);
   const [prevSearch, setPrevSearch] = useState('');
+  const storage = useLocalStorage('searchValue');
+  const savedSearch = storage.get();
 
   function handleSearch(value: string) {
     const trimmedValue = value.trim();
@@ -16,7 +19,7 @@ function MainPage() {
       return;
     } else {
       setPrevSearch(trimmedValue);
-      localStorage.setItem('searchValue', trimmedValue);
+      storage.set(trimmedValue);
     }
 
     setIsLoading(true);
@@ -63,7 +66,6 @@ function MainPage() {
   }
 
   useEffect(() => {
-    const savedSearch = localStorage.getItem('searchValue');
     const url = savedSearch
       ? `https://pokeapi.co/api/v2/pokemon/${savedSearch}`
       : `https://pokeapi.co/api/v2/pokemon?limit=10`;
@@ -92,6 +94,7 @@ function MainPage() {
         setError(error.message);
         setIsLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (throwError) {
