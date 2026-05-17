@@ -1,9 +1,25 @@
-import { Component } from 'react';
+/*import { Component } from 'react';
 import Header from './components/Header/Header';
 import Main from './components/Main/Main';
-import type { AppState } from './types';
+import type { AppState } from './types';*/
 
-class App extends Component {
+import MainPage from './pages/MainPage/MainPage';
+import AboutPage from './pages/AboutPage/AboutPage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import { Route, Routes } from 'react-router-dom';
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
+  );
+}
+export default App;
+
+/* class App extends Component {
   prevSearch: string = '';
   state: AppState = {
     pokemons: [],
@@ -109,3 +125,4 @@ class App extends Component {
   }
 }
 export default App;
+*/
