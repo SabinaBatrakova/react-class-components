@@ -52,3 +52,10 @@ export interface ErrorBoundaryState {
 export interface ErrorBoundaryProps {
   children: React.ReactNode;
 }
+
+export type PokemonDetail = {
+  name: string;
+  height: number;
+  sprites: { front_default: string };
+  abilities: { ability: { name: string } }[];
+};
