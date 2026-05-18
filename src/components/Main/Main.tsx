@@ -1,7 +1,7 @@
 import type { MainProps } from '../../types';
 import CardList from '../CardList/CardList';
 
-function Main({ isLoading, error, pokemons }: MainProps) {
+function Main({ isLoading, error, pokemons, onSelect }: MainProps) {
   return (
     <div className="flex-1 p-6">
       {isLoading ? (
@@ -14,7 +14,11 @@ function Main({ isLoading, error, pokemons }: MainProps) {
       ) : error ? (
         <div className="text-orange-400 text-center">{error}</div>
       ) : (
-        <CardList pokemons={pokemons} isLoading={isLoading} />
+        <CardList
+          pokemons={pokemons}
+          isLoading={isLoading}
+          onSelect={onSelect}
+        />
       )}
     </div>
   );

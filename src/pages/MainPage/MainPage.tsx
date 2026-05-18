@@ -3,7 +3,7 @@ import type { Pokemon } from '../../types';
 import Header from '../../components/Header/Header';
 import Main from '../../components/Main/Main';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Outlet } from 'react-router-dom';
 import { Pagination } from '../../components/Pagination/Pagination';
 
 function MainPage() {
@@ -18,6 +18,9 @@ function MainPage() {
   const page = Number(searchParams.get('page')) || 1;
   const onNext = () => setSearchParams({ page: String(page + 1) });
   const onPrev = () => setSearchParams({ page: String(page - 1) });
+  const onSelect = (id: string) => {
+    setSearchParams({ page: String(page), details: id });
+  };
 
   function handleSearch(value: string) {
     const trimmedValue = value.trim();
@@ -117,8 +120,22 @@ function MainPage() {
     <div>
       <div className="flex flex-col min-h-screen bg-gray-100">
         <Header onSearch={handleSearch} />
-        <Main pokemons={pokemons} isLoading={isLoading} error={error} />
-        <Pagination page={page} onNext={onNext} onPrev={onPrev} />
+        <div className="flex flex-1">
+          <div className="w-1/2">
+            <Main
+              pokemons={pokemons}
+              isLoading={isLoading}
+              error={error}
+              onSelect={onSelect}
+            />
+            <Pagination page={page} onNext={onNext} onPrev={onPrev} />
+          </div>
+
+          <div className="w-1/2">
+            <Outlet />
+          </div>
+        </div>
+
         <button
           className="fixed bottom-4 right-4 px-4 py-2 bg-amber-600 text-white rounded-3xl cursor-pointer hover:bg-amber-700"
           onClick={() => setThrowError(true)}

@@ -8,7 +8,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />}>
-        <Route path="info" element={<PokemonDetailPage />} />
+        <Route index element={<PokemonDetailPage />} />
       </Route>
       <Route path="/about" element={<AboutPage />} />
       <Route path="*" element={<NotFoundPage />} />

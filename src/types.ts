@@ -21,15 +21,18 @@ export interface MainProps {
   pokemons: Pokemon[];
   isLoading: boolean;
   error: string | null;
+  onSelect: (id: string) => void;
 }
 
 export interface CardListProps {
   pokemons: Pokemon[];
   isLoading: boolean;
+  onSelect: (id: string) => void;
 }
 
 export interface CardProps {
   pokemon: Pokemon;
+  onSelect: (id: string) => void;
 }
 
 export interface SearchProps {

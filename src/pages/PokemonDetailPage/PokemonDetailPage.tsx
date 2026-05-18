@@ -3,10 +3,14 @@ import { useState, useEffect } from 'react';
 import type { PokemonDetail } from '../../types';
 
 export function PokemonDetailPage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get('details');
   const [pokemon, setPokemon] = useState<PokemonDetail | null>(null);
 
+  const handleClose = () => {
+    searchParams.delete('details');
+    setSearchParams(searchParams);
+  };
   useEffect(() => {
     if (!id) return;
 
@@ -15,6 +19,7 @@ export function PokemonDetailPage() {
       .then((data) => setPokemon(data));
   }, [id]);
 
+  if (!id) return null;
   if (!pokemon) return <div>Loading...</div>;
 
   return (
@@ -25,7 +30,12 @@ export function PokemonDetailPage() {
       {pokemon.abilities.map((a) => (
         <p key={a.ability.name}>{a.ability.name}</p>
       ))}
-      <button>Close</button>
+      <button
+        onClick={handleClose}
+        className="px-4 py-2 bg-blue-950 text-white rounded-3xl cursor-pointer hover:bg-blue-400"
+      >
+        Close
+      </button>
     </div>
   );
 }
