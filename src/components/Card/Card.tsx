@@ -5,7 +5,10 @@ function Card({ pokemon, onSelect }: CardProps) {
 
   return (
     <div
-      onClick={() => onSelect(id!)}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect(id!);
+      }}
       className="bg-white p-4 mb-2 rounded shadow"
     >
       <p className="font-bold">{pokemon.name}</p>

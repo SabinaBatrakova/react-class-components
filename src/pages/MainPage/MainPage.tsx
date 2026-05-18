@@ -116,12 +116,17 @@ function MainPage() {
     throw new Error('Test error');
   }
 
+  const handleClick = () => {
+    searchParams.delete('details');
+    setSearchParams(searchParams);
+  };
+
   return (
     <div>
       <div className="flex flex-col min-h-screen bg-gray-100">
         <Header onSearch={handleSearch} />
         <div className="flex flex-1">
-          <div className="w-1/2">
+          <div className="w-1/2" onClick={handleClick}>
             <Main
               pokemons={pokemons}
               isLoading={isLoading}
