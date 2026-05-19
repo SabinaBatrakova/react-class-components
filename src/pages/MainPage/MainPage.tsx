@@ -133,7 +133,9 @@ function MainPage() {
               error={error}
               onSelect={onSelect}
             />
-            <Pagination page={page} onNext={onNext} onPrev={onPrev} />
+            {!isLoading && (
+              <Pagination page={page} onNext={onNext} onPrev={onPrev} />
+            )}
           </div>
 
           <div className="w-1/2">
