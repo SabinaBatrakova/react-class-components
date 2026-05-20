@@ -138,7 +138,7 @@ function MainPage() {
             )}
           </div>
 
-          <div className="w-1/2">
+          <div className="w-1/2 bg-white min-h-screen">
             <Outlet />
           </div>
         </div>

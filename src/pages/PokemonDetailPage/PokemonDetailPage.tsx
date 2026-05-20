@@ -20,7 +20,16 @@ export function PokemonDetailPage() {
   }, [id]);
 
   if (!id) return null;
-  if (!pokemon) return <div>Loading...</div>;
+  if (!pokemon)
+    return (
+      <div className="flex justify-center items-center h-40">
+        <div
+          data-testid="spinner"
+          className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"
+        ></div>
+        <p className="mt-2 text-blue-950">Loading...</p>
+      </div>
+    );
 
   return (
     <div className="flex flex-col items-center p-6">
