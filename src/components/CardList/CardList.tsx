@@ -1,17 +1,13 @@
-import { Component } from 'react';
-import Card from '../Card/Card';
 import type { CardListProps } from '../../types';
+import Card from '../Card/Card';
 
-class CardList extends Component<CardListProps> {
-  render() {
-    const { pokemons } = this.props;
-    return (
-      <div>
-        {(pokemons ?? []).map((pokemon) => (
-          <Card key={pokemon.name} pokemon={pokemon} />
-        ))}
-      </div>
-    );
-  }
+function CardList({ pokemons, onSelect }: CardListProps) {
+  return (
+    <div>
+      {(pokemons ?? []).map((pokemon) => (
+        <Card key={pokemon.name} pokemon={pokemon} onSelect={onSelect} />
+      ))}
+    </div>
+  );
 }
 export default CardList;

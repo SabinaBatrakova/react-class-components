@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import { BrowserRouter } from 'react-router-dom';
 
 describe('App', () => {
   beforeEach(() => {
@@ -16,7 +17,11 @@ describe('App', () => {
     });
   });
   it('loads pokemons on mount', async () => {
-    render(<App />);
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
     await waitFor(() => {
       expect(screen.getByText('pikachu')).toBeInTheDocument();
     });
@@ -29,9 +34,11 @@ describe('App', () => {
       json: () => Promise.resolve({}),
     });
     render(
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
+      <BrowserRouter>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </BrowserRouter>
     );
     await waitFor(() => {
       expect(screen.getByText('Error: 404')).toBeInTheDocument();
@@ -48,7 +55,11 @@ describe('App', () => {
         }),
     });
     localStorage.setItem('searchValue', 'pikachu');
-    render(<App />);
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
     await waitFor(() => {
       expect(screen.getByText('pikachu')).toBeInTheDocument();
     });
