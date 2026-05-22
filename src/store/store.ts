@@ -5,6 +5,7 @@ interface PokemonStore {
   pokemons: Pokemon[];
   addPokemon: (pokemon: Pokemon) => void;
   removePokemon: (pokemon: Pokemon) => void;
+  clearPokemons: () => void;
 }
 
 const usePokemonStore = create<PokemonStore>((set) => ({
@@ -17,6 +18,10 @@ const usePokemonStore = create<PokemonStore>((set) => ({
   removePokemon: (pokemon: Pokemon) =>
     set((state: { pokemons: Pokemon[] }) => ({
       pokemons: state.pokemons.filter((p) => p.url !== pokemon.url),
+    })),
+  clearPokemons: () =>
+    set(() => ({
+      pokemons: [],
     })),
 }));
 

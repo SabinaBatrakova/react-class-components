@@ -2,6 +2,7 @@ import usePokemonStore from '../../store/store';
 
 export function Flyout() {
   const pokemons = usePokemonStore((state) => state.pokemons);
+  const clearPokemons = usePokemonStore((state) => state.clearPokemons);
 
   if (pokemons.length === 0) {
     return null;
@@ -11,7 +12,7 @@ export function Flyout() {
         <p>{pokemons.length} items selected</p>
         <button
           className="bottom-4 right-4 px-4 py-2 bg-amber-600 text-white rounded-3xl cursor-pointer hover:bg-amber-700"
-          onClick={() => {}}
+          onClick={clearPokemons}
         >
           Unselect all
         </button>
