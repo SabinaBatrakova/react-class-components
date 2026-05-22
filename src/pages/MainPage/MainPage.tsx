@@ -5,6 +5,7 @@ import Main from '../../components/Main/Main';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useSearchParams, Outlet } from 'react-router-dom';
 import { Pagination } from '../../components/Pagination/Pagination';
+import Flyout from '../../components/Flyout/Flyout';
 
 function MainPage() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -149,6 +150,7 @@ function MainPage() {
         >
           Test Error
         </button>
+        <Flyout />
       </div>
     </div>
   );
