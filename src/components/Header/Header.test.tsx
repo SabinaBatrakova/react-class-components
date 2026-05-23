@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Header from './Header';
 import { BrowserRouter } from 'react-router-dom';
+import ThemeProvider from '../../context/ThemeProvider';
 
 describe('Header', () => {
   const mockOnSearch = vi.fn();
@@ -25,5 +26,17 @@ describe('Header', () => {
       </BrowserRouter>
     );
     expect(screen.getByRole('textbox')).toHaveValue('pikachu');
+  });
+  it('should switch theme when button clicked', () => {
+    render(
+      <BrowserRouter>
+        <ThemeProvider>
+          <Header onSearch={mockOnSearch} />
+        </ThemeProvider>
+      </BrowserRouter>
+    );
+    const button = screen.getByText('🌙 Dark');
+    fireEvent.click(button);
+    expect(screen.getByText('☀️ Light')).toBeInTheDocument();
   });
 });

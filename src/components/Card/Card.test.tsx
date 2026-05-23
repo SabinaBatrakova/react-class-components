@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import Card from './Card';
+import usePokemonStore from '../../store/store';
 
 describe('Card', () => {
   const mockPokemon = {
@@ -21,5 +22,10 @@ describe('Card', () => {
     render(<Card pokemon={mockPokemon} onSelect={mockOnSelect} />);
     fireEvent.click(screen.getByText('Pikachu'));
     expect(mockOnSelect).toHaveBeenCalledWith('25');
+  });
+  it('when clicked checkbox pokemon adding to store', () => {
+    render(<Card pokemon={mockPokemon} onSelect={mockOnSelect} />);
+    fireEvent.click(screen.getByRole('checkbox'));
+    expect(usePokemonStore.getState().pokemons).toContain(mockPokemon);
   });
 });
