@@ -13,7 +13,7 @@ function Header({ onSearch }: HeaderProps) {
   }
 
   return (
-    <div className="bg-gray-800 text-white p-4 w-full">
+    <div className="flex items-center justify-between bg-gray-800 text-white p-4 w-full">
       <Link to="/about">About</Link>
       <Search onSearch={onSearch} initValue={storage.get() || ''} />
       <button onClick={handleThemeSwitch}>
