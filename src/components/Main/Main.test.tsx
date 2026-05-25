@@ -13,17 +13,36 @@ describe('Main', () => {
     },
   ];
   it('loading, no error, no data', () => {
-    render(<Main isLoading={true} error={null} pokemons={mockPokemon} />);
+    render(
+      <Main
+        isLoading={true}
+        error={null}
+        pokemons={mockPokemon}
+        onSelect={() => {}}
+      />
+    );
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
   it('loading stopped, have error', () => {
     render(
-      <Main isLoading={false} error="Error: 404" pokemons={mockPokemon} />
+      <Main
+        isLoading={false}
+        error="Error: 404"
+        pokemons={mockPokemon}
+        onSelect={() => {}}
+      />
     );
     expect(screen.getByText('Error: 404')).toBeInTheDocument();
   });
   it('loading stopped, no error, have data', () => {
-    render(<Main isLoading={false} error={null} pokemons={mockPokemon} />);
+    render(
+      <Main
+        isLoading={false}
+        error={null}
+        pokemons={mockPokemon}
+        onSelect={() => {}}
+      />
+    );
     expect(screen.getByText('pikachu')).toBeInTheDocument();
   });
 });
