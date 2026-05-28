@@ -1,13 +1,28 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import PokemonDetailPage from './PokemonDetailPage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+let queryClient: QueryClient;
 
 describe('PokemonDetailPage', () => {
+  beforeEach(() => {
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
+  });
+
   it('render nothing when no details in URL', () => {
     render(
-      <MemoryRouter initialEntries={['/?details=25']}>
-        <PokemonDetailPage />
-      </MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={['/?details=25']}>
+          <PokemonDetailPage />
+        </MemoryRouter>
+      </QueryClientProvider>
     );
     expect(screen.queryByText('Close')).not.toBeInTheDocument();
   });
@@ -24,9 +39,11 @@ describe('PokemonDetailPage', () => {
         }),
     });
     render(
-      <MemoryRouter initialEntries={['/?details=25']}>
-        <PokemonDetailPage />
-      </MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={['/?details=25']}>
+          <PokemonDetailPage />
+        </MemoryRouter>
+      </QueryClientProvider>
     );
     await waitFor(() => {
       expect(screen.getByText('pikachu')).toBeInTheDocument();
