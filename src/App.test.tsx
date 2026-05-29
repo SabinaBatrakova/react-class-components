@@ -2,7 +2,9 @@ import { render, screen, waitFor } from '@testing-library/react';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+let queryClient: QueryClient;
 describe('App', () => {
   beforeEach(() => {
     localStorage.clear();
@@ -15,12 +17,22 @@ describe('App', () => {
           ],
         }),
     });
+
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
   });
   it('loads pokemons on mount', async () => {
     render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </QueryClientProvider>
     );
     await waitFor(() => {
       expect(screen.getByText('pikachu')).toBeInTheDocument();
@@ -34,11 +46,13 @@ describe('App', () => {
       json: () => Promise.resolve({}),
     });
     render(
-      <BrowserRouter>
-        <ErrorBoundary>
-          <App />
-        </ErrorBoundary>
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
+        </BrowserRouter>
+      </QueryClientProvider>
     );
     await waitFor(() => {
       expect(screen.getByText('Error: 404')).toBeInTheDocument();
@@ -56,9 +70,11 @@ describe('App', () => {
     });
     localStorage.setItem('searchValue', 'pikachu');
     render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </QueryClientProvider>
     );
     await waitFor(() => {
       expect(screen.getByText('pikachu')).toBeInTheDocument();
