@@ -1,7 +1,7 @@
 import type { ApiAnswer, Pokemon, PokemonDetail } from '../../types';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useSearchParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import Header from '../../components/Header/Header';
 import Main from '../../components/Main/Main';
@@ -54,6 +54,12 @@ function MainPage() {
     },
   });
 
+  const queryClient = useQueryClient();
+
+  const handleReload = () => {
+    queryClient.invalidateQueries({ queryKey: ['pokemons'] });
+  };
+
   const pokemons: Pokemon[] = data
     ? 'results' in data
       ? data.results
@@ -101,6 +107,12 @@ function MainPage() {
           onClick={() => setThrowError(true)}
         >
           Test Error
+        </button>
+        <button
+          className="fixed bottom-16 right-4 px-4 py-2 bg-amber-600 text-white rounded-3xl cursor-pointer hover:bg-amber-700"
+          onClick={handleReload}
+        >
+          Reload
         </button>
         <Flyout />
       </div>
