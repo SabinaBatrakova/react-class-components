@@ -1,22 +1,20 @@
-import { useState, useEffect } from 'react';
-import type { Pokemon } from '../../types';
+import type { ApiAnswer, Pokemon, PokemonDetail } from '../../types';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useSearchParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import Header from '../../components/Header/Header';
 import Main from '../../components/Main/Main';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { useSearchParams, Outlet } from 'react-router-dom';
-import { Pagination } from '../../components/Pagination/Pagination';
+import { Outlet } from 'react-router-dom';
 import Flyout from '../../components/Flyout/Flyout';
+import Pagination from '../../components/Pagination/Pagination';
 
 function MainPage() {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [throwError, setThrowError] = useState(false);
-  const [prevSearch, setPrevSearch] = useState('');
   const storage = useLocalStorage('searchValue');
-  const savedSearch = storage.get();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
+  const savedSearch = storage.get();
+  const [throwError, setThrowError] = useState(false);
   const onNext = () => setSearchParams({ page: String(page + 1) });
   const onPrev = () => setSearchParams({ page: String(page - 1) });
   const onSelect = (id: string) => {
@@ -25,93 +23,47 @@ function MainPage() {
 
   function handleSearch(value: string) {
     const trimmedValue = value.trim();
-    if (prevSearch === trimmedValue) {
-      return;
-    } else {
-      setPrevSearch(trimmedValue);
-      storage.set(trimmedValue);
-      setSearchParams({ page: '1' });
-    }
 
-    setIsLoading(true);
-    setError(null);
-
-    if (!trimmedValue) {
-      fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setPokemons(data.results);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          setError(error.message);
-          setIsLoading(false);
-        });
-    } else {
-      fetch(`https://pokeapi.co/api/v2/pokemon/${trimmedValue}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setPokemons([
-            {
-              name: data.name,
-              url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`,
-            },
-          ]);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          setError(error.message);
-          setIsLoading(false);
-        });
-    }
+    storage.set(trimmedValue);
+    setSearchParams({ page: '1' });
   }
 
-  useEffect(() => {
-    if (!searchParams.get('page')) {
-      setSearchParams({ page: '1' });
-    }
+  const { data, isLoading, error } = useQuery<ApiAnswer | PokemonDetail>({
+    queryKey: ['pokemons', page, savedSearch],
+    queryFn: () => {
+      if (savedSearch) {
+        return fetch(`https://pokeapi.co/api/v2/pokemon/${savedSearch}`).then(
+          (res) => {
+            if (!res.ok) {
+              throw new Error(`Error: ${res.status}`);
+            }
+            return res.json();
+          }
+        );
+      } else {
+        const offset = (page - 1) * 10;
+        return fetch(
+          `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`
+        ).then((res) => {
+          if (!res.ok) {
+            throw new Error(`Error: ${res.status}`);
+          }
+          return res.json();
+        });
+      }
+    },
+  });
 
-    const offset = (page - 1) * 10;
-    const url = savedSearch
-      ? `https://pokeapi.co/api/v2/pokemon/${savedSearch}`
-      : `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`;
-
-    fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (savedSearch) {
-          setPokemons([
-            {
-              name: data.name,
-              url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`,
-            },
-          ]);
-        } else {
-          setPokemons(data.results);
-        }
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setIsLoading(false);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, savedSearch]);
+  const pokemons: Pokemon[] = data
+    ? 'results' in data
+      ? data.results
+      : [
+          {
+            name: data.name,
+            url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`,
+          },
+        ]
+    : [];
 
   if (throwError) {
     throw new Error('Test error');
@@ -131,8 +83,8 @@ function MainPage() {
             <Main
               pokemons={pokemons}
               isLoading={isLoading}
-              error={error}
               onSelect={onSelect}
+              error={error?.message ?? null}
             />
             {!isLoading && (
               <Pagination page={page} onNext={onNext} onPrev={onPrev} />

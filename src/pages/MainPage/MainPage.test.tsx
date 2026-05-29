@@ -1,6 +1,9 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import MainPage from './MainPage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+let queryClient: QueryClient;
 
 describe('MainPage', () => {
   beforeEach(() => {
@@ -13,13 +16,22 @@ describe('MainPage', () => {
           ],
         }),
     });
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
   });
 
   it('Check loading pokemons mount', async () => {
     render(
-      <BrowserRouter>
-        <MainPage />
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <MainPage />
+        </BrowserRouter>
+      </QueryClientProvider>
     );
     await waitFor(() => {
       expect(screen.getByText('pikachu')).toBeInTheDocument();
@@ -28,18 +40,22 @@ describe('MainPage', () => {
 
   it('check spinner on loading', () => {
     render(
-      <BrowserRouter>
-        <MainPage />
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <MainPage />
+        </BrowserRouter>
+      </QueryClientProvider>
     );
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 
   it('handle search', async () => {
     render(
-      <BrowserRouter>
-        <MainPage />
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <MainPage />
+        </BrowserRouter>
+      </QueryClientProvider>
     );
     await waitFor(() => {
       expect(screen.getByText('pikachu')).toBeInTheDocument();
@@ -66,9 +82,11 @@ describe('MainPage', () => {
       json: () => Promise.resolve({}),
     });
     render(
-      <BrowserRouter>
-        <MainPage />
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <MainPage />
+        </BrowserRouter>
+      </QueryClientProvider>
     );
     await waitFor(() => {
       expect(screen.getByText('Error: 404')).toBeInTheDocument();

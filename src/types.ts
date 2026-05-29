@@ -57,6 +57,7 @@ export interface ErrorBoundaryProps {
 }
 
 export type PokemonDetail = {
+  id: number;
   name: string;
   height: number;
   sprites: { front_default: string };
