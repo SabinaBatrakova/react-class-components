@@ -2,10 +2,15 @@ import { z } from 'zod'
 
 export const formSchema = z
   .object({
-    name: z.string().refine((val) => val[0] === val[0].toUpperCase(), {
-      message: 'First letter must be uppercase',
-    }),
-    age: z.number().min(0, 'Age cannot be negative'),
+    name: z
+      .string()
+      .min(1, 'Name is required')
+      .refine((val) => val.length > 0 && val[0] === val[0].toUpperCase(), {
+        message: 'First letter must be uppercase',
+      }),
+    age: z
+      .number({ error: 'Age is required' })
+      .min(0, 'Age cannot be negative'),
     email: z.string().refine(
       (val) => {
         const parts = val.split('@')

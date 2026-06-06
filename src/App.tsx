@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Modal } from './components/Modal'
+import { UncontrolledForm } from './components/forms/UncontrolledForm/UncontrolledForm'
 
 function App() {
   const [isOpen, setIsOpen] = useState(false)
@@ -10,7 +11,7 @@ function App() {
       <button onClick={() => setIsOpen(true)}>Open form</button>
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <h2>Modal!</h2>
+        <UncontrolledForm onClose={() => setIsOpen(false)}/>
       </Modal>
     </div>
   )
