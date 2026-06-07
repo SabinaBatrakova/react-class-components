@@ -23,7 +23,7 @@ export const formSchema = z
     ),
     gender: z.string(),
     terms: z.boolean(),
-    image: z.string(),
+    image: z.union([z.string(), z.instanceof(FileList)]),
     password: z.string().min(1, 'Password is required'),
     confirmPassword: z.string().min(1, 'Password is required'),
     country: z.string(),

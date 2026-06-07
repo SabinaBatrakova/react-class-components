@@ -14,7 +14,7 @@ export function MainPage() {
           <p>{item.gender}</p>
           <p>{item.country}</p>
           <p>{item.terms ? 'Terms accepted' : 'Terms not accepted'}</p>
-          <img src={item.image} alt="uploaded" width={100} />
+          <img src={typeof item.image === 'string' ? item.image : ''} alt="uploaded" width={100} />
         </div>
       ))}
     </div>

@@ -4,7 +4,7 @@ export type FormData = {
   email: string
   gender: string
   terms: boolean
-  image: string
+  image: string | FileList
   password: string
   confirmPassword: string
   country: string
