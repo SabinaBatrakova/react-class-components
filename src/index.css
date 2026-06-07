@@ -1,3 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+ --color-primary: #2d6a4f;
+  --color-primary-dark: #1b4332;
+  --color-primary-light: #d8f3dc;
+}
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -12,5 +20,7 @@
   background: white;
   padding: 2rem;
   border-radius: 8px;
-  min-width: 400px;
+  min-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
