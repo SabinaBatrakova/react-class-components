@@ -14,6 +14,7 @@ export function ReactHookForm({ onClose }: ReactHookFormProps) {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    reset
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     mode: 'all',
@@ -24,6 +25,7 @@ export function ReactHookForm({ onClose }: ReactHookFormProps) {
     const imageFile = (data.image as unknown as FileList)[0]
     const image = await convertToBase64(imageFile)
     addFormData({ ...data, image })
+    reset()
     onClose()
   }
 
