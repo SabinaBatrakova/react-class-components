@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { Modal } from './components/Modal'
 import { UncontrolledForm } from './components/forms/UncontrolledForm/UncontrolledForm'
+import { MainPage } from './pages/MainPage'
 
 function App() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div>
+      <MainPage/>
       <h1>Forms</h1>
       <button onClick={() => setIsOpen(true)}>Open form</button>
 
