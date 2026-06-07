@@ -43,19 +43,23 @@ export function UncontrolledForm({ onClose }: UncontrolledFormProps) {
 
     const result = formSchema.safeParse(data)
     if (!result.success) {
-      const fieldErrors = result.error.flatten().fieldErrors
+      const fieldErrors: Record<string, string> = {}
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as string
+        if (field && !fieldErrors[field]) {
+          fieldErrors[field] = issue.message
+        }
+      })
       setErrors({
-        name: fieldErrors.name ? fieldErrors.name[0] : '',
-        age: fieldErrors.age ? fieldErrors.age[0] : '',
-        email: fieldErrors.email ? fieldErrors.email[0] : '',
-        gender: fieldErrors.gender ? fieldErrors.gender[0] : '',
-        terms: fieldErrors.terms ? fieldErrors.terms[0] : '',
-        password: fieldErrors.password ? fieldErrors.password[0] : '',
-        confirmPassword: fieldErrors.confirmPassword
-          ? fieldErrors.confirmPassword[0]
-          : '',
-        country: fieldErrors.country ? fieldErrors.country[0] : '',
-        image: fieldErrors.image ? fieldErrors.image[0] : '',
+        name: fieldErrors.name ?? '',
+        age: fieldErrors.age ?? '',
+        email: fieldErrors.email ?? '',
+        gender: fieldErrors.gender ?? '',
+        terms: fieldErrors.terms ?? '',
+        password: fieldErrors.password ?? '',
+        confirmPassword: fieldErrors.confirmPassword ?? '',
+        country: fieldErrors.country ?? '',
+        image: fieldErrors.image ?? '',
       })
       return
     }
