@@ -2,7 +2,7 @@ import { convertToBase64 } from '../../../utils/convertToBase64'
 import { formSchema } from '../../../validation/schema'
 import useStore from '../../../store'
 import { useState } from 'react'
-import { ALLOWED_TYPES, MAX_FILE_SIZE } from '../../../utils/constans'
+import { validateImage } from '../../../utils/validateImage'
 
 interface UncontrolledFormProps {
   onClose: () => void
@@ -27,16 +27,9 @@ export function UncontrolledForm({ onClose }: UncontrolledFormProps) {
     const formData = new FormData(e.currentTarget as HTMLFormElement)
     const imageFile = formData.get('image') as File
 
-    if (!ALLOWED_TYPES.includes(imageFile.type)) {
-      setErrors((prev) => ({ ...prev, image: 'Only PNG or JPEG' }))
-      return
-    }
-
-    if (imageFile.size > MAX_FILE_SIZE) {
-      setErrors((prev) => ({
-        ...prev,
-        image: 'File size must be less than 5MB',
-      }))
+    const imageError = validateImage(imageFile)
+    if (imageError) {
+      setErrors((prev) => ({ ...prev, image: imageError }))
       return
     }
 

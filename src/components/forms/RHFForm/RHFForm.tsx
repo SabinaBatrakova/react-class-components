@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { convertToBase64 } from '../../../utils/convertToBase64'
 import useStore from '../../../store'
 import type { FormData } from '../../../types'
-import { ALLOWED_TYPES, MAX_FILE_SIZE } from '../../../utils/constans'
+import { validateImage } from '../../../utils/validateImage'
 
 interface ReactHookFormProps {
   onClose: () => void
@@ -111,23 +111,10 @@ export function ReactHookForm({ onClose }: ReactHookFormProps) {
         <input
           id="image"
           {...register('image', {
-            validate: {
-              fileType: (value) => {
-                const file = (value as unknown as FileList)[0]
-                if (!file) return true
-                return (
-                  ALLOWED_TYPES.includes(file.type) ||
-                  'Only PNG and JPEG'
-                )
-              },
-              fileSize: (value) => {
-                const file = (value as unknown as FileList)[0]
-                if (!file) return true
-                return (
-                  file.size <= MAX_FILE_SIZE ||
-                  'File size must be less than 5MB'
-                )
-              },
+            validate: (value) => {
+              const file = (value as unknown as FileList)[0]
+              if (!file) return true
+              return validateImage(file) ?? true
             },
           })}
           type="file"
