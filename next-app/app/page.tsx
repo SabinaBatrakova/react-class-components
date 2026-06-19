@@ -1,3 +1,5 @@
+import Pagination from '@/components/Pagination';
+
 export default async function Home({
   searchParams,
 }: {
@@ -18,6 +20,7 @@ export default async function Home({
           <p>{pokemon.name}</p>
         </div>
       ))}
+      <Pagination page ={Number(page)}/>
     </div>
   );
 }
