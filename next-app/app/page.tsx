@@ -1,4 +1,5 @@
 import Pagination from '@/components/Pagination';
+import Link from 'next/link';
 
 export default async function Home({
   searchParams,
@@ -15,12 +16,15 @@ export default async function Home({
   return (
     <div>
       <h1>Pokemon list </h1>
-      {data.results.map((pokemon: { name: string; url: string }) => (
-        <div key={pokemon.name}>
-          <p>{pokemon.name}</p>
-        </div>
-      ))}
-      <Pagination page ={Number(page)}/>
+      {data.results.map((pokemon: { name: string; url: string }) => {
+        const id = pokemon.url.split('/')[6];
+        return (
+          <div key={pokemon.name}>
+            <Link href={`/pokemon/${id}`}>{pokemon.name}</Link>
+          </div>
+        );
+      })}
+      <Pagination page={Number(page)} />
     </div>
   );
 }
