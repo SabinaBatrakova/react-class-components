@@ -1,0 +1,16 @@
+{
+  "header": {
+    "about": "About"
+  },
+
+  "main": {
+    "pokemonList": "Pokemon list",
+    "submit": "Submit",
+    "prev":"Prev",
+    "next": "Next"
+  },
+
+  "about": {
+    "returnToTheMainPage": "Return to the main page"
+  }
+}

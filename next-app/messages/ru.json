@@ -1,0 +1,16 @@
+{
+  "header": {
+    "about": " О нас"
+  },
+
+  "main": {
+    "pokemonList": "Список покемонов",
+    "submit": "Подтвердить",
+    "prev":"До",
+    "next": "Следующая"
+  },
+
+  "about": {
+    "returnToTheMainPage": "На главную страницу"
+  }
+}
