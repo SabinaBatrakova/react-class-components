@@ -10,17 +10,22 @@ export default async function PokemonPage({
   const data = await response.json();
 
   return (
-    <div>
+    <div className="max-w-2xl mx-auto p-8 flex flex-col items-center">
+      <h1 className="text-3xl font-bold capitalize mb-4">{data.name}</h1>
       <Image
         src={data.sprites.front_default}
         alt={data.name}
-        width={96}
-        height={96}
+        width={200}
+        height={200}
       />
-
-      {data.abilities.map((a: { ability: { name: string } }) => (
-        <p key={a.ability.name}>{a.ability.name}</p>
-      ))}
+      <div className="mt-4">
+        <h2 className="text-xl font-semibold mb-2">Abilities:</h2>
+        {data.abilities.map((a: { ability: { name: string } }) => (
+          <p key={a.ability.name} className="text-blue-600 capitalize">
+            {a.ability.name}
+          </p>
+        ))}
+      </div>
     </div>
   );
 }
