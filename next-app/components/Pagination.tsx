@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface PaginationProps {
   page: number;
@@ -7,6 +8,7 @@ interface PaginationProps {
 
 export default function Pagination({ page }: PaginationProps) {
   const router = useRouter();
+  const t = useTranslations('main');
 
   const onNext = () => router.push(`?page=${page + 1}`);
   const onPrev = () => router.push(`?page=${page - 1}`);
@@ -19,7 +21,7 @@ export default function Pagination({ page }: PaginationProps) {
           onPrev();
         }}
       >
-        Prev
+        {t('prev')}
       </button>
       <span className="px-4 py-2 font-bold">{page}</span>
 
@@ -30,10 +32,8 @@ export default function Pagination({ page }: PaginationProps) {
           onNext();
         }}
       >
-        Next
+        {t('next')}
       </button>
     </div>
-  )
+  );
 }
-
-

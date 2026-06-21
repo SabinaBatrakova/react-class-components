@@ -1,5 +1,6 @@
 import Pagination from '@/components/Pagination';
 import SearchForm from '@/components/SearchForm';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
 export default async function Home({
@@ -11,6 +12,7 @@ export default async function Home({
   const offset = (Number(page) - 1) * 10;
 
   const search = (await searchParams).search || '';
+  const t = await getTranslations('main')
 
   let response;
 
@@ -37,7 +39,7 @@ export default async function Home({
 
   return (
     <div>
-      <h1>Pokemon list </h1>
+      <h1>{t('pokemonList')}</h1>
       <SearchForm/>
       {pokemons.map((pokemon: { name: string; url: string }) => {
         const id = pokemon.url.split('/')[6];
