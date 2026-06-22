@@ -1,7 +1,7 @@
 import Pagination from '@/components/Pagination';
 import SearchForm from '@/components/SearchForm';
 import { getTranslations } from 'next-intl/server';
-import Link from 'next/link';
+import {Link} from '@/navigation';
 
 export default async function Home({
   searchParams,
